@@ -19,3 +19,4 @@ Route::get('/', function () {
 
 Route::get('create', 'App\Http\Controllers\CreateController@index');
 
+Route::resource('blogs', \App\Http\Controllers\BlogController::class);
