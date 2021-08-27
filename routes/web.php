@@ -13,10 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-Route::get('create', 'App\Http\Controllers\CreateController@index');
 
-Route::resource('blogs', \App\Http\Controllers\BlogController::class);
+Route::get('blogs', '\App\Http\Controllers\BlogController@index');
+Route::get('blogs/show', '\App\Http\Controllers\BlogController@create');
+Route::post('blogs/show', '\App\Http\Controllers\BlogController@store');
+
+
