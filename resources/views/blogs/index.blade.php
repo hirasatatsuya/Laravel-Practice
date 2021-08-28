@@ -1,22 +1,18 @@
 @extends('layouts.helloapp')
 
-
-<style>
-    tr th a:link{color:white;}
-    tr th a:visited{color:white;}
-    tr th a:hover{color:white;}
-    tr th a:active{color:white;}
-</style>
-
-
 @section('content')
-    <h1>入力フォーム</h1>
-    <form action="/blogs/create" method="post">
-        <table>
-            @csrf
-            <tr><th>title: </th><td><input type="text" name="title"></td></tr>
-            <tr><th>content: </th><td><input type="text" name="content"></td></tr>
-            <tr><th></th><td><input type="submit" value="送信"></td></tr>
-        </table>
-    </form>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>content</th>
+        </tr>
+        @foreach($blogs as $blog)
+            <tr>
+                <td>{{$blog->id}}</td>
+                <td>{{$blog->title}}</td>
+                <td>{{$blog->content}}</td>
+            </tr>
+        @endforeach
+    </table>
 @endsection
