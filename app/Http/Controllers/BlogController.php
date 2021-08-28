@@ -30,9 +30,7 @@ class BlogController extends Controller
     }
 
     public function show(Request $request){
-        $id = $request->id;
-        $select = DB::select('SELECT * FROM blogs');
-        $data = $select->find($id);
-        return view('blogs.show', $data);
+        $data=DB::table('blogs')->where('id', $request->id)->first();
+        return view('blogs.show', compact('data'));
     }
 }
