@@ -6,23 +6,27 @@ use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
+
 class BlogController extends Controller
 {
     public function index()
     {
-        return view('blogs.index');
+        $blogs = DB::table('blogs')->get();
+        return view('blogs.index', $blogs);
     }
+
     public function create()
     {
-        $blogs = DB::select('SELECT * FROM blogs');
-        return view('blogs.create', ['blogs' => $blogs]);
+        $blogs = DB::table('blogs')->get();
+        return view('blogs.create', compact('blogs'));
     }
 
     public function store(Request $request)
     {
         $blogs = new Blog($request->all());
         $blogs->save();
-        return redirect('blogs/index');
+        return redirect('blogs/create');
     }
 
     public function show(Request $request){

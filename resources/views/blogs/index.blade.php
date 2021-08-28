@@ -11,7 +11,7 @@
 
 @section('content')
     <h1>入力フォーム</h1>
-    <form action="/blogs/index" method="post">
+    <form action="/blogs/create" method="post">
         <table>
             @csrf
             <tr><th>title: </th><td><input type="text" name="title"></td></tr>
