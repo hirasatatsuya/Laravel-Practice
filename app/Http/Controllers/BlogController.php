@@ -24,6 +24,7 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $blogs = new Blog($request->all());
+        $this->validation($request);
         $blogs->save();
         return redirect('/blogs');
     }
@@ -40,10 +41,11 @@ class BlogController extends Controller
 
     public function update(Request $request){
         $param=[
-            'id' => $request->id,
-            'title' => $request->title,
-            'content' => $request->content,
+            'id' => $request['id'],
+            'title' => $request['title'],
+            'content' => $request['content'],
         ];
+        $this->validation($request);
         DB::table('blogs')->where('id',$request->id)->update($param);
         return redirect('/blogs');
     }
@@ -51,5 +53,13 @@ class BlogController extends Controller
     public function destroy(Request $request){
         DB::table('blogs')->where('id',$request->id)->delete();
         return redirect('/blogs');
+    }
+
+    public function validation(Request $request){
+        $validate_rule = [
+            'title' => 'required|string|max:255',
+            'content' => 'max:2000',
+        ];
+        $this->validate($request, $validate_rule);
     }
 }

@@ -26,3 +26,4 @@ Route::get('blogs/edit', '\App\Http\Controllers\BlogController@edit');
 Route::post('blogs/edit', '\App\Http\Controllers\BlogController@update');
 Route::get('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
 Route::post('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
+Route::get('blogs/validate', '\App\Http\Controllers\BlogController@validation');
