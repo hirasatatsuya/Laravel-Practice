@@ -24,6 +24,5 @@ Route::post('blogs/create', '\App\Http\Controllers\BlogController@store');
 Route::get('blogs/show', '\App\Http\Controllers\BlogController@show');
 Route::get('blogs/edit', '\App\Http\Controllers\BlogController@edit');
 Route::post('blogs/edit', '\App\Http\Controllers\BlogController@update');
-
-
-
+Route::get('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
+Route::post('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');

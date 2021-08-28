@@ -47,4 +47,9 @@ class BlogController extends Controller
         DB::table('blogs')->where('id',$request->id)->update($param);
         return redirect('/blogs');
     }
+
+    public function destroy(Request $request){
+        DB::table('blogs')->where('id',$request->id)->delete();
+        return redirect('/blogs');
+    }
 }
