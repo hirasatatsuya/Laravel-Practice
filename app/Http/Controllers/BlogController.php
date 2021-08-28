@@ -22,7 +22,13 @@ class BlogController extends Controller
     {
         $blogs = new Blog($request->all());
         $blogs->save();
-        return redirect('blogs/show');
+        return redirect('blogs/index');
     }
 
+    public function show(Request $request){
+        $id = $request->id;
+        $select = DB::select('SELECT * FROM blogs');
+        $data = $select->find($id);
+        return view('blogs.show', $data);
+    }
 }

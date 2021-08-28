@@ -8,9 +8,10 @@
     tr th a:active{color:white;}
 </style>
 
+
 @section('content')
     <h1>入力フォーム</h1>
-    <form action="/blogs/show" method="post">
+    <form action="/blogs/index" method="post">
         <table>
             @csrf
             <tr><th>title: </th><td><input type="text" name="title"></td></tr>

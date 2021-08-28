@@ -19,7 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('blogs', '\App\Http\Controllers\BlogController@index');
-Route::get('blogs/show', '\App\Http\Controllers\BlogController@create');
-Route::post('blogs/show', '\App\Http\Controllers\BlogController@store');
+Route::get('blogs/index', '\App\Http\Controllers\BlogController@create');
+Route::post('blogs/index', '\App\Http\Controllers\BlogController@store');
+Route::get('blogs/show', '\App\Http\Controllers\BlogController@show');
 
 
