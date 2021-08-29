@@ -1,6 +1,11 @@
 @extends('layouts.helloapp')
 
 @section('content')
+    <form action="/blogs" method="post">
+        @csrf
+        <input type="text" name="keyword" value="">
+        <input type="submit" value="send">
+    </form>
     <table>
         <tr>
             <th>id</th>

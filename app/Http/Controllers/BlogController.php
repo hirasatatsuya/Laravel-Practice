@@ -62,4 +62,14 @@ class BlogController extends Controller
         ];
         $this->validate($request, $validate_rule);
     }
+
+    public function search(Request $request){
+        $s_word = $request['keyword'];
+        echo $s_word;
+        $blogs = DB::table('blogs')
+            ->where('title', 'like', "%$s_word%")
+            ->orWhere('content', 'like', "%$s_word%")
+            ->get();
+        return view('blogs.index', ['blogs' => $blogs]);
+    }
 }
