@@ -28,3 +28,7 @@ Route::get('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
 Route::post('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
 Route::get('blogs/validate', '\App\Http\Controllers\BlogController@validation');
 Route::post('blogs', '\App\Http\Controllers\BlogController@search');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
