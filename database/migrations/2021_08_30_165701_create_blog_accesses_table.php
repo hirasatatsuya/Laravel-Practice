@@ -16,7 +16,7 @@ class CreateBlogAccessesTable extends Migration
         Schema::create('blog_accesses', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->deleted_at();
+            $table->softDeletes();
         });
     }
 
