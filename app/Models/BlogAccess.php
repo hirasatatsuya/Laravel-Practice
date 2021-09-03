@@ -12,4 +12,9 @@ class BlogAccess extends Model
     protected $fillable=[
         'blog_id'
     ];
+
+    public function blog()
+    {
+        return $this->belongsTo('App\Models\Blog');
+    }
 }

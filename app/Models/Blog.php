@@ -16,6 +16,16 @@ class Blog extends Model
         'content'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
+    public function blogaccesses()
+    {
+        return $this->hasMany('App\Models\BlogAccess');
+    }
+
 //    protected $fillable = [
 //        'user_id',
 //        'picture',
