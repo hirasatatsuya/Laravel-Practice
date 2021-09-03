@@ -45,7 +45,12 @@ class BlogController extends Controller
 
     public function filter($id)
     {
-        return substr(Crypt::decryptString($id), 2, -1);
+        try {
+            $decrypted = Crypt::decryptString($id);
+            return substr($decrypted, 2, -1);
+        } catch(\Exception $e) {
+            return view('errors.404');
+        }
     }
 
     public function update(Request $request)
