@@ -1,7 +1,7 @@
 @extends('layouts.helloapp')
 
 @section('content')
-    <h1>入力フォーム</h1>
+    <h1>追加フォーム</h1>
     <form action="/blogs/create" method="post">
         <table>
             @csrf

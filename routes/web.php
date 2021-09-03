@@ -19,18 +19,19 @@ Route::get('/', function () {
 });
 
 Route::resource('blogs', BlogController::class);
+//Route::resource('blogs', BlogController::class);
 
-Route::get('blogs', [BlogController::class, 'index']);
-Route::get('blogs/create', '\App\Http\Controllers\BlogController@create');
-Route::post('blogs/store', '\App\Http\Controllers\BlogController@store');
-Route::get('blogs/show', '\App\Http\Controllers\BlogController@show');
-Route::get('blogs/edit', '\App\Http\Controllers\BlogController@edit');
-Route::post('blogs/edit', '\App\Http\Controllers\BlogController@update');
-Route::get('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
-//Route::post('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
-Route::get('blogs/validate', '\App\Http\Controllers\BlogController@validation');
-Route::post('blogs', '\App\Http\Controllers\BlogController@search');
-Route::get('blogs/filter', '\App\Http\Controllers\BlogController@filter');
+//Route::get('blogs', [BlogController::class, 'index']);
+//Route::get('blogs/create', '\App\Http\Controllers\BlogController@create');
+//Route::post('blogs/store', '\App\Http\Controllers\BlogController@store');
+//Route::get('blogs/show', '\App\Http\Controllers\BlogController@show');
+//Route::get('blogs/edit', '\App\Http\Controllers\BlogController@edit');
+//Route::post('blogs/edit', '\App\Http\Controllers\BlogController@update');
+//Route::get('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
+////Route::post('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
+//Route::get('blogs/validate', '\App\Http\Controllers\BlogController@validation');
+//Route::post('blogs', '\App\Http\Controllers\BlogController@search');
+//Route::get('blogs/filter', '\App\Http\Controllers\BlogController@filter');
 
 Auth::routes();
 
