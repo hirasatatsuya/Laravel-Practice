@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('blogs', BlogController::class);
 
 Route::get('blogs', [BlogController::class, 'index']);
 Route::get('blogs/create', '\App\Http\Controllers\BlogController@create');
@@ -29,6 +30,7 @@ Route::get('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
 //Route::post('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
 Route::get('blogs/validate', '\App\Http\Controllers\BlogController@validation');
 Route::post('blogs', '\App\Http\Controllers\BlogController@search');
+Route::get('blogs/filter', '\App\Http\Controllers\BlogController@filter');
 
 Auth::routes();
 

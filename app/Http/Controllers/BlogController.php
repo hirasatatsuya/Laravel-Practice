@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
 class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = DB::table('blogs')->get();
+        $blogs = DB::select('SELECT * FROM blogs');
         return view('blogs.index', ['blogs' => $blogs]);
     }
 
@@ -29,33 +29,45 @@ class BlogController extends Controller
         return redirect('/blogs');
     }
 
-    public function show(Request $request){
-        $data=DB::table('blogs')->where('id', $request->id)->first();
-        return view('blogs.show', compact('data'));
+    public function show(Request $request, $id)
+    {
+        $new_id = $this->filter($id);
+        $data = blog::where('id', $new_id)->first();
+        return view('blogs.show', ['data' => $data]);
     }
 
-    public function edit(Request $request){
-        $data=DB::table('blogs')->where('id', $request->id)->first();
+    public function edit(Request $request, $id)
+    {
+        $new_id = $this->filter($id);
+        $data = blog::where('id', $new_id)->first();
         return view('blogs.edit', ['data' => $data]);
     }
 
-    public function update(Request $request){
-        $param=[
+    public function filter($id)
+    {
+        return substr(Crypt::decryptString($id), 2, -1);
+    }
+
+    public function update(Request $request)
+    {
+        $param = [
             'id' => $request['id'],
             'title' => $request['title'],
             'content' => $request['content'],
         ];
         $this->validation($request);
-        DB::table('blogs')->where('id',$request->id)->update($param);
+        blog::where('id', $request->id)->update($param);
         return redirect('/blogs');
     }
 
-    public function destroy(Request $request){
-        DB::table('blogs')->where('id',$request->id)->delete();
+    public function destroy(Request $request)
+    {
+        blog::where('id', $request->id)->delete();
         return redirect('/blogs');
     }
 
-    public function validation(Request $request){
+    public function validation(Request $request)
+    {
         $validate_rule = [
             'title' => 'required|string|max:255',
             'content' => 'max:2000',
@@ -63,7 +75,8 @@ class BlogController extends Controller
         $this->validate($request, $validate_rule);
     }
 
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $s_word = $request['keyword'];
         echo $s_word;
         $blogs = DB::table('blogs')

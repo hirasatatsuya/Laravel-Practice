@@ -10,15 +10,16 @@ class Blog extends Model
 
     use HasFactory;
 
-//    protected $fillable = [
-//        'title',
-//        'content'
-//    ];
-
     protected $fillable = [
-        'user_id',
-        'picture',
-        'all_count',
-        'active'
+        'id',
+        'title',
+        'content'
     ];
+
+//    protected $fillable = [
+//        'user_id',
+//        'picture',
+//        'all_count',
+//        'active'
+//    ];
 }
