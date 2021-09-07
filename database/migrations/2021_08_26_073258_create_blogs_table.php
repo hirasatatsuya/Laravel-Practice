@@ -14,9 +14,10 @@ class CreateBlogsTable extends Migration
     public function up()
     {
         Schema::create('blogs', function (Blueprint $blogs) {
-            $blogs->id();
+            $blogs->integer('id');
             $blogs->string('title')->default("")->comment('タイトル');
             $blogs->text('content')->nullable()->comment('内容');
+            $blogs->integer('count');
             $blogs->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\BlogAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
@@ -12,13 +13,16 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = DB::select('SELECT * FROM blogs');
+        //Eager loading
+        $blogs = Blog::with('blogaccesses')->get();
+
         return view('blogs.index', ['blogs' => $blogs]);
     }
 
     public function create()
     {
-        return view('blogs.create');
+        $blogs = DB::select('SELECT * FROM blogs');
+        return view('blogs.create', ['blogs' => $blogs]);
     }
 
     public function store(Request $request)
@@ -28,15 +32,17 @@ class BlogController extends Controller
         $blogs->save();
         return redirect('/blogs');
     }
-
+    
     public function show(Request $request, $id)
     {
         $new_id = $this->filter($id);
         $data = blog::where('id', $new_id)->first();
+
+        $data->blogaccesses()->create([]);
         return view('blogs.show', ['data' => $data]);
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $id) //暗号化されたid表示済み
     {
         $new_id = $this->filter($id);
         $data = blog::where('id', $new_id)->first();
@@ -80,14 +86,14 @@ class BlogController extends Controller
         $this->validate($request, $validate_rule);
     }
 
-    public function search(Request $request)
-    {
-        $s_word = $request['keyword'];
-        echo $s_word;
-        $blogs = DB::table('blogs')
-            ->where('title', 'like', "%$s_word%")
-            ->orWhere('content', 'like', "%$s_word%")
-            ->get();
-        return view('blogs.index', ['blogs' => $blogs]);
-    }
+//    public function search(Request $request)
+//    {
+//        $s_word = $request['keyword'];
+//        echo $s_word;
+//        $blogs = DB::table('blogs')
+//            ->where('title', 'like', "%$s_word%")
+//            ->orWhere('content', 'like', "%$s_word%")
+//            ->get();
+//        return view('blogs.index', ['blogs' => $blogs]);
+//    }
 }

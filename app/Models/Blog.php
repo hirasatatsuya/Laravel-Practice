@@ -13,15 +13,16 @@ class Blog extends Model
     protected $fillable = [
         'id',
         'title',
-        'content'
+        'content',
+        'count'
     ];
 
-    public function user()
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo('App\Models\User');
     }
 
-    public function blogaccesses()
+    public function blogaccesses(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany('App\Models\BlogAccess');
     }

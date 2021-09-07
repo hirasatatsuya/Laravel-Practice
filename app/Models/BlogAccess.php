@@ -10,11 +10,11 @@ class BlogAccess extends Model
     use HasFactory;
 
     protected $fillable=[
-        'blog_id'
+        'id'
     ];
 
-    public function blog()
+    public function blog(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo('App\Models\Blog');
+        return $this->belongsTo('App\Models\Blog', 'blog_id','id' );
     }
 }
