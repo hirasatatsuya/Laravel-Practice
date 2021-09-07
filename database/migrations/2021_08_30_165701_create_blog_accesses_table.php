@@ -14,8 +14,9 @@ class CreateBlogAccessesTable extends Migration
     public function up()
     {
         Schema::create('blog_accesses', function (Blueprint $table) {
-            $table->integer('id');
+            $table->id();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

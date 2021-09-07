@@ -42,7 +42,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function Blog(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function blogs()
     {
         return $this->hasMany('App\Models\Blog');
     }
