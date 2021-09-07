@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Crypt;
 
 class BlogController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
+
     public function index()
     {
 //        $blogs = DB::select('SELECT * FROM blogs');
@@ -68,9 +73,10 @@ class BlogController extends Controller
         return redirect('/blogs');
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
-        blog::where('id', $request->id)->delete();
+        $new_id = $this->filter($id);
+        blog::where('id', $new_id)->delete();
         return redirect('/blogs');
     }
 

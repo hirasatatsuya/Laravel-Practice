@@ -1,6 +1,22 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <title>@yield('title')</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body{font-size:16pt;color:#999;margin:5px;}
+        h1{font-size:50pt;text-align:left;color:#000;
+            margin:-20px 0px 50px 0px;letter-spacing:-4pt;}
+        ul{font-size:12pt;}
+        hr{margin:25px 100px;border-top:1px dashed #ddd;}
+        .menutitle{font-size:14pt;font-weight:bold;margin:0px;}
+        .content{margin-left: 50px}
+        .footer{text-align:right;font-size:10pt;margin:10px;border-bottom:solid 1px #ccc;color:#ccc;}
+        th{background-color:#999;color:fff;padding:5px 10px;}
+        td{border:solid 1px#aaa;color:#999;padding:5px 10px;}
+
+    </style>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 

@@ -18,8 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
+
 Route::resource('blogs', BlogController::class);
-//Route::resource('blogs', BlogController::class);
+
 
 //Route::get('blogs', [BlogController::class, 'index']);
 //Route::get('blogs/create', '\App\Http\Controllers\BlogController@create');
@@ -33,6 +36,4 @@ Route::resource('blogs', BlogController::class);
 //Route::post('blogs', '\App\Http\Controllers\BlogController@search');
 //Route::get('blogs/filter', '\App\Http\Controllers\BlogController@filter');
 
-Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
