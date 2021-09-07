@@ -12,7 +12,9 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $blogs = DB::select('SELECT * FROM blogs');
+//        $blogs = DB::select('SELECT * FROM blogs');
+
+        $blogs = Blog::with('blogaccesses')->get();
         return view('blogs.index', ['blogs' => $blogs]);
     }
 
@@ -33,6 +35,7 @@ class BlogController extends Controller
     {
         $new_id = $this->filter($id);
         $data = blog::where('id', $new_id)->first();
+        $data->blogaccesses()->create([]);
         return view('blogs.show', ['data' => $data]);
     }
 
