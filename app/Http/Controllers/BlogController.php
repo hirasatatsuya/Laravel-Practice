@@ -3,24 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\View;
 
 class BlogController extends Controller
 {
+
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
+
+        $this->middleware(function ($request, $next) {
+            // 認証情報を取得
+            $this->user = Auth::user();
+
+            View::share('user', $this->user);
+
+            return $next($request);
+        });
     }
 
     public function index()
     {
-//        $blogs = DB::select('SELECT * FROM blogs');
-
         $blogs = Blog::with('blogaccesses')->get();
-        return view('blogs.index', ['blogs' => $blogs]);
+        return view('blogs.index', [
+            'blogs' => $blogs,
+        ]);
     }
 
     public function create()

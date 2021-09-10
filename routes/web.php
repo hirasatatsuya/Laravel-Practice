@@ -24,6 +24,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index']);
 Route::resource('blogs', BlogController::class);
 
 
+
 //Route::get('blogs', [BlogController::class, 'index']);
 //Route::get('blogs/create', '\App\Http\Controllers\BlogController@create');
 //Route::post('blogs/store', '\App\Http\Controllers\BlogController@store');

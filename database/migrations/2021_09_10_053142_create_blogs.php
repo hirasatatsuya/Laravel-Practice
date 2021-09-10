@@ -4,8 +4,9 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBlogsTable extends Migration
+class CreateBlogs extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -13,14 +14,13 @@ class CreateBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $blogs) {
-            $blogs->id();
-            $blogs->string('title')->default("")->comment('タイトル');
-            $blogs->text('content')->nullable()->comment('内容');
-            $blogs->timestamps();
+        Schema::table('blogs', function (Blueprint $table) {
+            $table->integer('user_id')->default("0")->after('id');
+            $table->string('picture')->nullable()->after('content');
+            $table->integer('all_count')->nullable()->after('picture');
+            $table->boolean('active')->default(false)->after('all_count');
         });
     }
-
 
     /**
      * Reverse the migrations.
@@ -31,4 +31,5 @@ class CreateBlogsTable extends Migration
     {
         Schema::dropIfExists('blogs');
     }
+
 }

@@ -13,7 +13,11 @@ class Blog extends Model
     protected $fillable = [
         'id',
         'title',
-        'content'
+        'content',
+        'user_id',
+        'picture',
+        'all_count',
+        'active'
     ];
 
     public function user()
@@ -26,10 +30,4 @@ class Blog extends Model
         return $this->hasMany('App\Models\BlogAccess');
     }
 
-//    protected $fillable = [
-//        'user_id',
-//        'picture',
-//        'all_count',
-//        'active'
-//    ];
 }

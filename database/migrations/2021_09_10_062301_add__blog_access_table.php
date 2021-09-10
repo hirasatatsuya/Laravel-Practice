@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBlogsTable extends Migration
+class AddBlogAccessTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $blogs) {
-            $blogs->id();
-            $blogs->string('title')->default("")->comment('タイトル');
-            $blogs->text('content')->nullable()->comment('内容');
-            $blogs->timestamps();
+        Schema::table('blog_accesses', function (Blueprint $table) {
+            $table->integer('blog_id')->default(0)->after('id')->comment('ブログID');
         });
     }
-
 
     /**
      * Reverse the migrations.
@@ -29,6 +25,6 @@ class CreateBlogsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blogs');
+        //
     }
 }
