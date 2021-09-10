@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\View;
 class BlogController extends Controller
 {
 
+    private $user;
+
     public function __construct()
     {
         $this->middleware('auth')->except(['index', 'show']);
@@ -26,6 +28,13 @@ class BlogController extends Controller
 
             return $next($request);
         });
+    }
+
+    public function other_users_deny($data)
+    {
+        if( $this->user->id !== $data->user_id ){
+            abort(404);
+        }
     }
 
     public function index()
@@ -61,6 +70,7 @@ class BlogController extends Controller
     {
         $new_id = $this->filter($id);
         $data = blog::where('id', $new_id)->first();
+        $this->other_users_deny($data);
         return view('blogs.edit', ['data' => $data]);
     }
 
@@ -82,14 +92,16 @@ class BlogController extends Controller
             'content' => $request['content'],
         ];
         $this->validation($request);
-        blog::where('id', $request->id)->update($param);
+        $data = blog::where('id', $request->id)->update($param);
+        $this->other_users_deny($data);
         return redirect('/blogs');
     }
 
     public function destroy(Request $request, $id)
     {
         $new_id = $this->filter($id);
-        blog::where('id', $new_id)->delete();
+        $data = blog::where('id', $new_id)->delete();
+        $this->other_users_deny($data);
         return redirect('/blogs');
     }
 

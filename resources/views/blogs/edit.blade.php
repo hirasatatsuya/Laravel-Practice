@@ -6,7 +6,7 @@
         <table>
             @csrf
             <input type="hidden"name="id"value="{{$data->id}}">
-            <tr><th>title:</th><td>{{ $data->id }}</td></tr>
+            <tr><th>id:</th><td>{{ $data->id }}</td></tr>
             <tr><th>title:</th><td><input type="text"name="title" value="{{$data->title}}"></td></tr>
             <tr><th>content:</th><td><input type="text"name="content" value="{{$data->content}}"></td></tr>
             <tr><th></th><td><input type="submit" value="send"></td></tr>
