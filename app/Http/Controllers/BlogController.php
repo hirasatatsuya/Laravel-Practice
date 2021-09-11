@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
 class BlogController extends Controller
@@ -53,9 +54,20 @@ class BlogController extends Controller
     public function store(Request $request)
     {
         $blogs = new Blog($request->all());
+        if( $request['picture'] ){
+            $file_path = request()->file('picture')->getClientOriginalName();
+            $this->store_image($file_path, $blogs);
+        }
+
         $this->validation($request);
         $blogs->save();
         return redirect('/blogs');
+    }
+
+    public function store_image($request, $blogs)
+    {
+        $blogs->picture = $blogs->picture->storeAs('public/image', $request);
+        Storage::disk('local')->put($blogs->picture, 'picture');
     }
 
     public function show(Request $request, $id)
@@ -93,6 +105,10 @@ class BlogController extends Controller
         ];
         $this->validation($request);
         $data = blog::where('id', $request->id)->update($param);
+        if( $request['picture'] ){
+            $file_path = request()->file('picture')->getClientOriginalName();
+            $this->store_image($file_path, $data);
+        }
         $this->other_users_deny($data);
         return redirect('/blogs');
     }

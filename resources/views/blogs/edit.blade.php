@@ -2,7 +2,7 @@
 
 @section('content')
     <h1>編集フォーム</h1>
-    <form action="/blogs/edit" method="POST">
+    <form action="{{ route('blogs.edit') }}" method="POST">
         <table>
             @csrf
             <input type="hidden"name="id"value="{{$data->id}}">
