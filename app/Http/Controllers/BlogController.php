@@ -41,6 +41,8 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::with('blogaccesses')->get();
+        $blogs = Blog::Active($blogs)->get();
+        logger($blogs);
         return view('blogs.index', [
             'blogs' => $blogs,
         ]);

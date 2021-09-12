@@ -30,4 +30,9 @@ class Blog extends Model
         return $this->hasMany('App\Models\BlogAccess');
     }
 
+    public function scopeActive($query, $blogs)
+    {
+        return $query->where('active', 1);
+    }
+
 }
