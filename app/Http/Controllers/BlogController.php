@@ -23,6 +23,7 @@ class BlogController extends Controller
 
         $this->middleware(function ($request, $next) {
             // 認証情報を取得
+
             $this->user = Auth::user();
 
             View::share('user', $this->user);
@@ -40,11 +41,14 @@ class BlogController extends Controller
 
     public function index()
     {
-        $blogs = Blog::with('blogaccesses')->get();
-        $blogs = Blog::Active($blogs)->get();
-        logger($blogs);
+        $blogs = Blog::with('blogaccesses')->first();
+
+        $blogs_active = Blog::Active($blogs)->get();
+        $blogs_inactive = Blog::Inactive($blogs)->where('user_id', optional($this->user)->id)->get();
+
         return view('blogs.index', [
-            'blogs' => $blogs,
+            'blogs_active' => $blogs_active,
+            'blogs_inactive' => $blogs_inactive,
         ]);
     }
 
