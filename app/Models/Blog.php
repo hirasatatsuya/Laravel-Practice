@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Blog extends Model
+class Blog extends BaseModel
 {
-
-    use SoftDeletes;
     use HasFactory;
 
     protected $fillable = [
@@ -30,16 +28,6 @@ class Blog extends Model
     public function blogaccesses()
     {
         return $this->hasMany('App\Models\BlogAccess');
-    }
-
-    public function scopeActive($query, $blogs)
-    {
-        return $query->where('active', 1);
-    }
-
-    public function scopeInactive($query)
-    {
-        return $query->where('active', 0);
     }
 
 }
