@@ -81,8 +81,7 @@
                                 <span>編集</span></a></td>
                         <td>
                             <form action="{{ route('blogs.destroy', Crypt::encrypt($blog['id'])) }}"
-                                  id="form_{{ $blog->id }}"
-                                  method="post">
+                                  id="form_{{ $blog->id }}" method="post">
                                 @csrf
                                 {{ method_field('delete') }}
                                 <a href="#" data-id="{{ $blog->id }}" onclick="deletePost(this);" class="btn btn-danger">
@@ -95,4 +94,13 @@
         @endif
 
     </div>
+
+    <script>
+        function deletePost(e) {
+            'use strict';
+            if(confirm('本当に削除していいですか?')){
+                document.getElementById('form_' + e.dataset.id).submit();
+            }
+        }
+    </script>
 @endsection
