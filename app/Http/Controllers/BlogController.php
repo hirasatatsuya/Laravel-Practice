@@ -43,8 +43,8 @@ class BlogController extends Controller
     {
         $blogs = Blog::with('blogaccesses')->first();
 
-        $blogs_active = Blog::Active($blogs)->get();
-        $blogs_inactive = Blog::Inactive($blogs)->where('user_id', optional($this->user)->id)->get();
+        $blogs_active = Blog::Active($blogs)->simplePaginate(20, ['*'], 'active');
+        $blogs_inactive = Blog::Inactive($blogs)->where('user_id', optional($this->user)->id)->simplePaginate(20, ['*'], 'inactive');
 
         return view('blogs.index', [
             'blogs_active' => $blogs_active,
@@ -136,14 +136,26 @@ class BlogController extends Controller
         $this->validate($request, $validate_rule);
     }
 
+
+    //２ページ目に行くとblogaccesses() on nullの表示
+    //Lv4-03-08
     public function search(Request $request)
     {
         $s_word = $request['keyword'];
-        echo $s_word;
-        $blogs = DB::table('blogs')
+
+        $blogs = Blog::with('blogaccesses');
+        $active_blogs = Blog::Active($blogs)
             ->where('title', 'like', "%$s_word%")
-            ->orWhere('content', 'like', "%$s_word%")
-            ->get();
-        return view('blogs.index', ['blogs' => $blogs]);
+            ->Where('content', 'like', "%$s_word%")
+            ->simplePaginate(20, ['*'], 'active');
+        $inactive_blogs = Blog::InActive($blogs)
+            ->where('user_id', optional($this->user)->id)
+            ->where('title', 'like', "%$s_word%")
+            ->Where('content', 'like', "%$s_word%")
+            ->simplePaginate(10, ['*'], 'inactive');
+        return view('blogs.index',
+            ['blogs_active' => $active_blogs],
+            ['blogs_inactive' => $inactive_blogs],
+        );
     }
 }

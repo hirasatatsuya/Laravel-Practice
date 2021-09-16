@@ -6,6 +6,12 @@
         <h1>データ一覧</h1>
         <a href="{{ route('blogs.create') }}" style="font-size: 30px;"><span>新規作成</span></a>
 
+        <form action="{{ url('blogs/search') }}" method="post">
+            @csrf
+            <input type="text" name="keyword" value="">
+            <input type="submit" value="検索">
+        </form>
+
         <table>
             <tr>
                 <th>id</th>
@@ -49,7 +55,9 @@
 
                 </tr>
             @endforeach
+
         </table>
+        {{ $blogs_active->appends(['active'])->links() }}
 
         @if($user)
             <h3 style="margin-top: 30px;">非公開ブログ</h3>
@@ -91,6 +99,7 @@
                 @endforeach
                 </tbody>
             </table>
+            {{ $blogs_inactive->appends(['inactive'])->links() }}
         @endif
 
     </div>
