@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\Blog;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class BlogsFactory extends Factory
+class BlogFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
@@ -19,7 +19,7 @@ class BlogsFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => rand(1, 3),
