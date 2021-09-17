@@ -78,16 +78,15 @@ class BlogController extends Controller
 
     public function show(Request $request, $id)
     {
-        $new_id = $this->filter($id);
-        $data = blog::where('id', $new_id)->first();
+        $data = $this->filter($id);
+//        $data = blog::where('id', $new_id)->first();
         $data->blogaccesses()->create([]);
         return view('blogs.show', ['data' => $data]);
     }
 
     public function edit(Request $request, $id)
     {
-        $new_id = $this->filter($id);
-        $data = blog::where('id', $new_id)->first();
+        $data = $this->filter($id);
         $this->other_users_deny($data);
         return view('blogs.edit', ['data' => $data]);
     }
@@ -95,11 +94,17 @@ class BlogController extends Controller
     public function filter($id)
     {
         try {
-            $decrypted = Crypt::decryptString($id);
-            return substr($decrypted, 2, -1);
+            $decrypted = Crypt::decrypt($id);
+            logger();
         } catch(\Exception $e) {
-            return view('errors.404');
+            abort(404);
         }
+//        $new_id = substr($decrypted, 2, -1);
+        $data = Blog::find($decrypted);
+        if( !$data ) {
+            abort(404);
+        }
+        return $data;
     }
 
     public function update(Request $request)
@@ -121,9 +126,9 @@ class BlogController extends Controller
 
     public function destroy(Request $request, $id)
     {
-        $new_id = $this->filter($id);
-        $data = blog::where('id', $new_id)->delete();
+        $data = $this->filter($id);
         $this->other_users_deny($data);
+        $data->delete();
         return redirect('/blogs');
     }
 
