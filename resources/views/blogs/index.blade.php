@@ -30,7 +30,7 @@
                     <td>{{$blog->title}}</td>
                     <td>{{$blog->content}}</td>
                     <td>{{ $blog->user['name'] }}</td>
-                    <td>{{ $blog->blogaccesses->count() }}</td>
+                    <td>{{ $blog->blog_accesses->count() }}</td>
                     <td><a href="{{ route('blogs.show', Crypt::encrypt($blog->{'id'})) }}" class="btn btn-success">
                             <span>閲覧</span>
                         </a>
@@ -82,7 +82,7 @@
                         <td>{{ $blog['title'] }}</td>
                         <td>{!! mb_substr(nl2br(e($blog['content'])), 0, 200) !!}</td>
                         <td>{{ $user['name'] }}</td>
-                        <td>{{ $blog->blogaccesses->count() }}</td>
+                        <td>{{ $blog->blog_accesses->count() }}</td>
                         <td><a href="{{ route('blogs.show', Crypt::encrypt($blog['id'])) }}" class="btn btn-success">
                                 <span>閲覧</span></a></td>
                         <td><a href="{{ route('blogs.edit', Crypt::encrypt($blog['id'])) }}" class="btn btn-primary">

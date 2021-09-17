@@ -41,7 +41,7 @@ class BlogController extends Controller
 
     public function index()
     {
-        $blogs = Blog::with('blogaccesses')->first();
+        $blogs = Blog::with('blog_accesses')->first();
 
         $blogs_active = Blog::Active($blogs)->simplePaginate(20, ['*'], 'active');
         $blogs_inactive = Blog::Inactive($blogs)->where('user_id', optional($this->user)->id)->simplePaginate(20, ['*'], 'inactive');
@@ -59,28 +59,28 @@ class BlogController extends Controller
 
     public function store(Request $request)
     {
-        $blogs = new Blog($request->all());
+        $blog = new Blog($request->all());
         if( $request['picture'] ){
             $file_path = request()->file('picture')->getClientOriginalName();
-            $this->store_image($file_path, $blogs);
+            $this->store_image($file_path, $blog);
         }
 
         $this->validation($request);
-        $blogs->save();
+        $blog->save();
         return redirect('/blogs');
     }
 
-    public function store_image($request, $blogs)
+    public function store_image($request, $blog)
     {
-        $blogs->picture = $blogs->picture->storeAs('public/image', $request);
-        Storage::disk('local')->put($blogs->picture, 'picture');
+        $blog->picture = $blog->picture->storeAs('public/image', $request);
+        Storage::disk('local')->put($blog->picture, 'picture');
     }
 
     public function show(Request $request, $id)
     {
         $data = $this->filter($id);
 //        $data = blog::where('id', $new_id)->first();
-        $data->blogaccesses()->create([]);
+        $data->blog_accesses()->create([]);
         return view('blogs.show', ['data' => $data]);
     }
 
@@ -109,18 +109,14 @@ class BlogController extends Controller
 
     public function update(Request $request)
     {
-        $param = [
-            'id' => $request['id'],
-            'title' => $request['title'],
-            'content' => $request['content'],
-        ];
+        $data = $this->fileter($request);
+        $this->other_users_deny($data);
         $this->validation($request);
-        $data = blog::where('id', $request->id)->update($param);
+        $data->fill($request->all())->save();
         if( $request['picture'] ){
             $file_path = request()->file('picture')->getClientOriginalName();
             $this->store_image($file_path, $data);
         }
-        $this->other_users_deny($data);
         return redirect('/blogs');
     }
 
@@ -142,13 +138,13 @@ class BlogController extends Controller
     }
 
 
-    //２ページ目に行くとblogaccesses() on nullの表示
+    //２ページ目に行くとblog_accesses() on nullの表示
     //Lv4-03-08
     public function search(Request $request)
     {
         $s_word = $request['keyword'];
 
-        $blogs = Blog::with('blogaccesses');
+        $blogs = Blog::with('blog_accesses');
         $active_blogs = Blog::Active($blogs)
             ->where('title', 'like', "%$s_word%")
             ->Where('content', 'like', "%$s_word%")

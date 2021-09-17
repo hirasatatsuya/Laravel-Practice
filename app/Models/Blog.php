@@ -25,7 +25,7 @@ class Blog extends BaseModel
         return $this->belongsTo('App\Models\User');
     }
 
-    public function blogaccesses()
+    public function blog_accesses()
     {
         return $this->hasMany('App\Models\BlogAccess');
     }
