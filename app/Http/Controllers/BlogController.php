@@ -39,16 +39,28 @@ class BlogController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::with('blog_accesses')->first();
+        $keyword = $request['keyword'];
 
-        $blogs_active = Blog::Active($blogs)->simplePaginate(20, ['*'], 'active');
-        $blogs_inactive = Blog::Inactive($blogs)->where('user_id', optional($this->user)->id)->simplePaginate(20, ['*'], 'inactive');
+        $blogs = Blog::with('blog_accesses')->first();
+        $active_blogs = $blogs->active($blogs)
+            ->where('title', 'like', "%$keyword%")
+            ->where('content', 'like', "%$keyword%")
+            ->simplePaginate(20, ['*'], 'active');
+        $inactive_blogs = $blogs->inactive($blogs)
+            ->where('user_id', optional($this->user)->id)
+            ->where('title', 'like', "%$keyword%")
+            ->where('content', 'like', "%$keyword%")
+            ->simplePaginate(20, ['*'], 'inactive');
+
+//        $blogs_active = $blogs->active()->paginate(20);
+//        $blogs_inactive = $blogs->inactive()->where('user_id', optional($this->user)->id)->paginate(20);
 
         return view('blogs.index', [
-            'blogs_active' => $blogs_active,
-            'blogs_inactive' => $blogs_inactive,
+            'blogs_active' => $active_blogs,
+            'blogs_inactive' => $inactive_blogs,
+            'keyword' => $keyword
         ]);
     }
 
@@ -142,17 +154,17 @@ class BlogController extends Controller
     //Lv4-03-08
     public function search(Request $request)
     {
-        $s_word = $request['keyword'];
+        $keyword = $request['keyword'];
 
         $blogs = Blog::with('blog_accesses');
         $active_blogs = Blog::Active($blogs)
-            ->where('title', 'like', "%$s_word%")
-            ->Where('content', 'like', "%$s_word%")
+            ->where('title', 'like', "%$keyword%")
+            ->Where('content', 'like', "%$keyword%")
             ->simplePaginate(20, ['*'], 'active');
         $inactive_blogs = Blog::InActive($blogs)
             ->where('user_id', optional($this->user)->id)
-            ->where('title', 'like', "%$s_word%")
-            ->Where('content', 'like', "%$s_word%")
+            ->where('title', 'like', "%$keyword%")
+            ->Where('content', 'like', "%$keyword%")
             ->simplePaginate(10, ['*'], 'inactive');
         return view('blogs.index',
             ['blogs_active' => $active_blogs],

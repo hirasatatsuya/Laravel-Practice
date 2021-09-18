@@ -6,9 +6,9 @@
         <h1>データ一覧</h1>
         <a href="{{ route('blogs.create') }}" style="font-size: 30px;"><span>新規作成</span></a>
 
-        <form action="{{ url('blogs/search') }}" method="post">
+        <form action="{{ url('blogs') }}" method="get" style="margin-bottom: 30px">
             @csrf
-            <input type="text" name="keyword" value="">
+            <input type="text" name="keyword" value="{{ $keyword }}">
             <input type="submit" value="検索">
         </form>
 
