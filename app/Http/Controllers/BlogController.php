@@ -11,6 +11,7 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Validation\ValidationException;
 
 class BlogController extends Controller
 {
@@ -34,6 +35,9 @@ class BlogController extends Controller
 
     public function other_users_deny($data)
     {
+//        logger('other');
+//        logger($data);
+//        logger('other');
         if( $this->user->id !== $data->user_id ){
             abort(404);
         }
@@ -88,17 +92,22 @@ class BlogController extends Controller
         Storage::disk('local')->put($blog->picture, 'picture');
     }
 
-    public function show(Request $request, $id)
+    public function show($id)
     {
+        logger($id);
         $data = $this->filter($id);
-//        $data = blog::where('id', $new_id)->first();
+//        $data = Blog::find($new_id);
         $data->blog_accesses()->create([]);
         return view('blogs.show', ['data' => $data]);
     }
 
-    public function edit(Request $request, $id)
+    public function edit($value)
     {
-        $data = $this->filter($id);
+//        logger('edit');
+//        logger($value);
+//        logger('edit');
+        $data = $this->filter($value);
+//        $data = Blog::find($new_id);
         $this->other_users_deny($data);
         return view('blogs.edit', ['data' => $data]);
     }
@@ -106,24 +115,49 @@ class BlogController extends Controller
     public function filter($id)
     {
         try {
+//            logger(1111);
+//            logger($id);
+//            logger(2222);
             $decrypted = Crypt::decrypt($id);
-            logger();
+//            logger(1111);
+//            logger($decrypted);
         } catch(\Exception $e) {
+//            logger(2222);
             abort(404);
         }
+        //編集で記述した
 //        $new_id = substr($decrypted, 2, -1);
         $data = Blog::find($decrypted);
         if( !$data ) {
             abort(404);
         }
+//        logger($data);
         return $data;
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $data = $this->fileter($request);
+//        logger($id);
+//        logger($request);
+
+        $data = $this->filter($id);
         $this->other_users_deny($data);
-        $this->validation($request);
+//        logger('update');
+//        logger($data);
+//        logger('update');
+
+//        $this->validation($data);
+
+//        $param = [
+//            'title' => $request->title,
+//            'content' => $request->mail,
+//        ];
+//        logger($param);
+
+//        logger('update');
+//        logger($data);
+//        logger('update');
+
         $data->fill($request->all())->save();
         if( $request['picture'] ){
             $file_path = request()->file('picture')->getClientOriginalName();
@@ -140,13 +174,15 @@ class BlogController extends Controller
         return redirect('/blogs');
     }
 
-    public function validation(Request $request)
+    public function validation($request)
     {
-        $validate_rule = [
+        $validate = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'max:2000',
-        ];
-        $this->validate($request, $validate_rule);
+        ]);
+        if($validate){
+            logger('OK');
+        }
     }
 
 

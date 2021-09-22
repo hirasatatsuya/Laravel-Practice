@@ -6,7 +6,7 @@
         <h1>データ一覧</h1>
         <a href="{{ route('blogs.create') }}" style="font-size: 30px;"><span>新規作成</span></a>
 
-        <form action="{{ url('blogs') }}" method="get" style="margin-bottom: 30px">
+        <form action="{{ url('blogs') }}" method="GET" style="margin-bottom: 30px">
             @csrf
             <input type="text" name="keyword" value="{{ $keyword }}">
             <input type="submit" value="検索">
@@ -31,15 +31,15 @@
                     <td>{{$blog->content}}</td>
                     <td>{{ $blog->user['name'] }}</td>
                     <td>{{ $blog->blog_accesses->count() }}</td>
-                    <td><a href="{{ route('blogs.show', Crypt::encrypt($blog->{'id'})) }}" class="btn btn-success">
+                    <td><a href="{{ route('blogs.show', Crypt::encrypt( $blog->{'id'})) }}" class="btn btn-success">
                             <span>閲覧</span>
                         </a>
                     </td>
                     @if($user && $blog->user_id == $user->id)
-                        <td><a href=" {{ route('blogs.edit', Crypt::encrypt($blog['id'])) }} " class="btn btn-primary">
-                            <span>編集</span></a></td>
+                        <td><a href="{{ route('blogs.edit', Crypt::encrypt( $blog->{'id'})) }}" class="btn btn-primary">
+                                <span>編集</span></a></td>
                         <td>
-                            <form action="{{ route('blogs.destroy', Crypt::encrypt($blog['id'])) }}"
+                            <form action="{{ route('blogs.destroy', Crypt::encrypt( $blog->{'id'})) }}"
                             id="form_{{ $blog->id }}" method="post">
                                 @csrf
                                 {{ method_field('delete') }}
@@ -83,12 +83,12 @@
                         <td>{!! mb_substr(nl2br(e($blog['content'])), 0, 200) !!}</td>
                         <td>{{ $user['name'] }}</td>
                         <td>{{ $blog->blog_accesses->count() }}</td>
-                        <td><a href="{{ route('blogs.show', Crypt::encrypt($blog['id'])) }}" class="btn btn-success">
+                        <td><a href="{{ route('blogs.show', Crypt::encrypt( $blog->{'id'})) }}" class="btn btn-success">
                                 <span>閲覧</span></a></td>
-                        <td><a href="{{ route('blogs.edit', Crypt::encrypt($blog['id'])) }}" class="btn btn-primary">
+                        <td><a href="{{ route('blogs.edit', Crypt::encrypt( $blog->{'id'})) }}" class="btn btn-primary">
                                 <span>編集</span></a></td>
                         <td>
-                            <form action="{{ route('blogs.destroy', Crypt::encrypt($blog['id'])) }}"
+                            <form action="{{ route('blogs.destroy', Crypt::encrypt( $blog->{'id'})) }}"
                                   id="form_{{ $blog->id }}" method="post">
                                 @csrf
                                 {{ method_field('delete') }}
