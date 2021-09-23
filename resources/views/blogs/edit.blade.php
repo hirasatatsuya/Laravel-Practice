@@ -8,7 +8,7 @@
             @method('PUT')
             <input type="hidden" name="id" value="{{ $data->id }}">
             <tr><th>id:</th><td>{{ $data->id }}</td></tr>
-            <tr><th>title:</th><td><input type="text" name="title" value="{{ $data->title }}" placeholder="ブログタイトル" required=""></td></tr>
+            <tr><th>title:</th><td><input type="text" name="title" value="{{ old('title', $data->title) }}" placeholder="ブログタイトル" required=""></td></tr>
             <tr><th>content:</th><td><input type="text" name="content" value="{{ $data->content }}"></td></tr>
 
 {{--            ToDo 写真変更--}}

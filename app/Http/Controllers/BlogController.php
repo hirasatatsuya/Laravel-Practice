@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
@@ -146,13 +147,14 @@ class BlogController extends Controller
 //        logger($data);
 //        logger('update');
 
-//        $this->validation($data);
-
 //        $param = [
 //            'title' => $request->title,
-//            'content' => $request->mail,
+//            'content' => $request->content,
 //        ];
 //        logger($param);
+
+        $this->validation($request);
+
 
 //        logger('update');
 //        logger($data);
@@ -176,13 +178,15 @@ class BlogController extends Controller
 
     public function validation($request)
     {
-        $validate = $request->validate([
-            'title' => 'required|string|max:255',
+        Validator::make($request->all(), [
+            'title' => 'required|string|max:250',
             'content' => 'max:2000',
-        ]);
-        if($validate){
-            logger('OK');
-        }
+        ])->validate();
+//        if ($validate->fails()) {
+//            return redirect('/blogs/edit')
+//                ->withErrors($validate)
+//                ->withInput();
+//        }
     }
 
 
