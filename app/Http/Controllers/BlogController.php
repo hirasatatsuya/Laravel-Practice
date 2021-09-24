@@ -95,7 +95,6 @@ class BlogController extends Controller
 
     public function show($id)
     {
-        logger($id);
         $data = $this->filter($id);
 //        $data = Blog::find($new_id);
         $data->blog_accesses()->create([]);
@@ -178,15 +177,17 @@ class BlogController extends Controller
 
     public function validation($request)
     {
-        Validator::make($request->all(), [
+        $rules = [
             'title' => 'required|string|max:250',
             'content' => 'max:2000',
-        ])->validate();
-//        if ($validate->fails()) {
-//            return redirect('/blogs/edit')
-//                ->withErrors($validate)
-//                ->withInput();
-//        }
+        ];
+        $messages = [
+            'title.required' => 'タイトルは必ず入力してください．',
+            'title.string' => '文字列で入力してください',
+            'title.max' => '250文字以内で入力してください',
+            'content.max' => '2000文字以内で入力してください'
+        ];
+        Validator::make($request->all(), $rules, $messages)->validate();
     }
 
 
