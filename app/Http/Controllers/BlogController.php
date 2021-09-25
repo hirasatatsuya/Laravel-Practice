@@ -48,16 +48,39 @@ class BlogController extends Controller
     {
         $keyword = $request['keyword'];
 
-        $blogs = Blog::with('blog_accesses')->first();
-        $active_blogs = $blogs->active($blogs)
-            ->where('title', 'like', "%$keyword%")
-            ->where('content', 'like', "%$keyword%")
-            ->simplePaginate(20, ['*'], 'active');
-        $inactive_blogs = $blogs->inactive($blogs)
-            ->where('user_id', optional($this->user)->id)
-            ->where('title', 'like', "%$keyword%")
-            ->where('content', 'like', "%$keyword%")
-            ->simplePaginate(20, ['*'], 'inactive');
+        $active_query = Blog::query()->with(['blog_accesses', 'user']);
+        $inactive_query = Blog::query()->with(['blog_accesses', 'user']);
+
+
+        if ( $keyword ){
+            logger(1111);
+            $active_blogs = $active_query
+                ->active()
+                ->where(function ($query) use ($keyword) {
+                    $query->where('title', 'like', "%". $keyword. "%")
+                        ->orwhere('content', 'like', "%". $keyword. "%");
+                })
+                ->Paginate(10);
+            $inactive_blogs = $inactive_query
+                ->inactive()
+                ->where('user_id', optional($this->user)->id)
+                ->where(function ($query) use ($keyword) {
+                    $query->where('title', 'like', "%". $keyword. "%")
+                        ->orwhere('content', 'like', "%". $keyword. "%");
+                })
+                ->Paginate(10);
+            foreach ($inactive_blogs as $data){
+                logger($data->title);
+            }
+        } else {
+            logger(22222);
+            $active_blogs = Blog::active()
+                ->with(['blog_accesses', 'user'])
+                ->Paginate(20);
+            $inactive_blogs = Blog::inactive()
+                ->with(['blog_accesses', 'user'])
+                ->Paginate(20);
+        }
 
 //        $blogs_active = $blogs->active()->paginate(20);
 //        $blogs_inactive = $blogs->inactive()->where('user_id', optional($this->user)->id)->paginate(20);
@@ -193,23 +216,24 @@ class BlogController extends Controller
 
     //２ページ目に行くとblog_accesses() on nullの表示
     //Lv4-03-08
-    public function search(Request $request)
-    {
-        $keyword = $request['keyword'];
-
-        $blogs = Blog::with('blog_accesses');
-        $active_blogs = Blog::Active($blogs)
-            ->where('title', 'like', "%$keyword%")
-            ->Where('content', 'like', "%$keyword%")
-            ->simplePaginate(20, ['*'], 'active');
-        $inactive_blogs = Blog::InActive($blogs)
-            ->where('user_id', optional($this->user)->id)
-            ->where('title', 'like', "%$keyword%")
-            ->Where('content', 'like', "%$keyword%")
-            ->simplePaginate(10, ['*'], 'inactive');
-        return view('blogs.index',
-            ['blogs_active' => $active_blogs],
-            ['blogs_inactive' => $inactive_blogs],
-        );
-    }
+//    public function search(Request $request)
+//    {
+//        $keyword = $request->keyword;
+//
+//        logger(111111);
+//        logger($keyword);
+//        logger(111111);
+//        $blogs = Blog::with('blog_accesses');
+//        $active_blogs = Blog::Active($blogs)
+//            ->where('title', 'like', "%$keyword%")
+//            ->where('content', 'like', "%$keyword%");
+//        $inactive_blogs = Blog::InActive($blogs)
+//            ->where('user_id', optional($this->user)->id);
+////            ->where('title', 'like', "%$keyword%")
+////            ->where('content', 'like', "%$keyword%");
+//        return view('blogs.index',
+//            ['blogs_active' => $active_blogs],
+//            ['blogs_inactive' => $inactive_blogs],
+//        );
+//    }
 }

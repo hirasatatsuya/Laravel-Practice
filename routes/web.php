@@ -35,6 +35,6 @@ Route::resource('/blogs', BlogController::class);
 ////Route::post('blogs/destroy', '\App\Http\Controllers\BlogController@destroy');
 //Route::get('blogs/validate', '\App\Http\Controllers\BlogController@validation');
 //Route::post('blogs', '\App\Http\Controllers\BlogController@search');
-Route::post('blogs/search', '\App\Http\Controllers\BlogController@search');
+//Route::post('blogs/search', '\App\Http\Controllers\BlogController@search')->name('blogs.search');
 
 
