@@ -33,13 +33,13 @@
 
 {{--            ToDo 公開非公開　変更--}}
             <tr>
-                <th></th>
+                <th>active:</th>
                 <td></td>
             </tr>
 
 {{--            ToDo 写真変更--}}
             <tr>
-                <th></th>
+                <th>picuture:</th>
                 <td></td>
             </tr>
 

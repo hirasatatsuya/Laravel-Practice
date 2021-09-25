@@ -114,8 +114,9 @@ class BlogController extends Controller
 
     public function store_image($request, $blog)
     {
-        $blog->picture = $blog->picture->storeAs('public/image', $request);
-        Storage::disk('local')->put($blog->picture, 'picture');
+        $temp_path = $blog->picture->storeAs('public/image', $request);
+        $blog->picture = str_replace('public/', 'storage/', $temp_path);
+//        Storage::disk('local')->put($blog->picture, 'picture');
     }
 
     public function show($id)
@@ -123,7 +124,16 @@ class BlogController extends Controller
         $data = $this->filter($id);
 //        $data = Blog::find($new_id);
         $data->blog_accesses()->create([]);
-        return view('blogs.show', ['data' => $data]);
+        if( $data->active == 1){
+            $message = "公開";
+        }
+        if( $data->active == 0){
+            $message = "非公開";
+        }
+        return view('blogs.show', [
+            'data' => $data,
+            'message' => $message,
+        ]);
     }
 
     public function edit($value)
