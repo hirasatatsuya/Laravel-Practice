@@ -8,9 +8,14 @@
         <tr><th>content</th><td>{{ $data->content }}</td></tr>
         <tr><th>active</th><td>{{ $message }}</td></tr>
         <tr><th>picture</th>
-            <td>
-                <img src={{ asset($data->picture) }} width="300px">
-            </td>
+            @if( !$data->picture )
+                <td>画像なし</td>
+            @endif
+            @if($data->picture)
+                <td>
+                    <img src={{ asset($data->picture) }} width="300px">
+                </td>
+            @endif
         </tr>
     </table>
 

@@ -34,13 +34,21 @@
 {{--            ToDo 公開非公開　変更--}}
             <tr>
                 <th>active:</th>
-                <td></td>
+                @if( $data->active == 1)
+                    <td><input type="radio" name="active" value="1" checked="checked">公開
+                        <input type="radio" name="active" value="0">非公開</td>
+                @endif
+                @if( $data->active == 0)
+                    <td><input type="radio" name="active" value="1">公開
+                        <input type="radio" name="active" value="0" checked="checked">非公開</td>
+                @endif
             </tr>
 
 {{--            ToDo 写真変更--}}
             <tr>
-                <th>picuture:</th>
-                <td></td>
+                <th>picture:</th>
+                <td><img src={{ asset($data->picture) }} width="200px"><br>
+                    <input type="file" name="picture" style="margin:20px 0px 10px"></td>
             </tr>
 
             <tr><th></th><td><input type="submit" value="編集"></td></tr>

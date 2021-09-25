@@ -36,9 +36,6 @@ class BlogController extends Controller
 
     public function other_users_deny($data)
     {
-//        logger('other');
-//        logger($data);
-//        logger('other');
         if( $this->user->id !== $data->user_id ){
             abort(404);
         }
@@ -53,7 +50,6 @@ class BlogController extends Controller
 
 
         if ( $keyword ){
-            logger(1111);
             $active_blogs = $active_query
                 ->active()
                 ->where(function ($query) use ($keyword) {
@@ -74,7 +70,6 @@ class BlogController extends Controller
                 logger($data->title);
             }
         } else {
-            logger(22222);
             $active_blogs = $active_query
                 ->active()
                 ->Paginate(20);
@@ -114,7 +109,7 @@ class BlogController extends Controller
 
     public function store_image($request, $blog)
     {
-        $temp_path = $blog->picture->storeAs('public/image', $request);
+        $temp_path = request()->file('picture')->storeAs('public/image', $request);
         $blog->picture = str_replace('public/', 'storage/', $temp_path);
 //        Storage::disk('local')->put($blog->picture, 'picture');
     }
@@ -138,9 +133,6 @@ class BlogController extends Controller
 
     public function edit($value)
     {
-//        logger('edit');
-//        logger($value);
-//        logger('edit');
         $data = $this->filter($value);
 //        $data = Blog::find($new_id);
         $this->other_users_deny($data);
@@ -150,12 +142,7 @@ class BlogController extends Controller
     public function filter($id)
     {
         try {
-//            logger(1111);
-//            logger($id);
-//            logger(2222);
             $decrypted = Crypt::decrypt($id);
-//            logger(1111);
-//            logger($decrypted);
         } catch(\Exception $e) {
 //            logger(2222);
             abort(404);
@@ -172,33 +159,17 @@ class BlogController extends Controller
 
     public function update(Request $request, $id)
     {
-//        logger($id);
-//        logger($request);
 
         $data = $this->filter($id);
         $this->other_users_deny($data);
-//        logger('update');
-//        logger($data);
-//        logger('update');
-
-//        $param = [
-//            'title' => $request->title,
-//            'content' => $request->content,
-//        ];
-//        logger($param);
 
         $this->validation($request);
 
-
-//        logger('update');
-//        logger($data);
-//        logger('update');
-
-        $data->fill($request->all())->save();
         if( $request['picture'] ){
             $file_path = request()->file('picture')->getClientOriginalName();
             $this->store_image($file_path, $data);
         }
+        $data->fill($request->all())->save();
         return redirect('/blogs');
     }
 
