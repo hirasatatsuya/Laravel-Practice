@@ -31,7 +31,17 @@
                 </td>
             </tr>
 
+{{--            ToDo 公開非公開　変更--}}
+            <tr>
+                <th></th>
+                <td></td>
+            </tr>
+
 {{--            ToDo 写真変更--}}
+            <tr>
+                <th></th>
+                <td></td>
+            </tr>
 
             <tr><th></th><td><input type="submit" value="編集"></td></tr>
         </table>

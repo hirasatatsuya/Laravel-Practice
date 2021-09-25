@@ -60,7 +60,7 @@ class BlogController extends Controller
                     $query->where('title', 'like', "%". $keyword. "%")
                         ->orwhere('content', 'like', "%". $keyword. "%");
                 })
-                ->Paginate(10);
+                ->Paginate(20);
             $inactive_blogs = $inactive_query
                 ->inactive()
                 ->where('user_id', optional($this->user)->id)
@@ -68,17 +68,19 @@ class BlogController extends Controller
                     $query->where('title', 'like', "%". $keyword. "%")
                         ->orwhere('content', 'like', "%". $keyword. "%");
                 })
-                ->Paginate(10);
+                ->Paginate(20);
+            logger(optional($this->user)->id);
             foreach ($inactive_blogs as $data){
                 logger($data->title);
             }
         } else {
             logger(22222);
-            $active_blogs = Blog::active()
-                ->with(['blog_accesses', 'user'])
+            $active_blogs = $active_query
+                ->active()
                 ->Paginate(20);
-            $inactive_blogs = Blog::inactive()
-                ->with(['blog_accesses', 'user'])
+            $inactive_blogs = $inactive_query
+                ->where('user_id', optional($this->user)->id)
+                ->inactive()
                 ->Paginate(20);
         }
 
