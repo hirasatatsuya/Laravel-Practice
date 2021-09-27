@@ -111,6 +111,7 @@ class BlogController extends Controller
     {
         $temp_path = request()->file('picture')->storeAs('public/image', $request);
         $blog->picture = str_replace('public/', 'storage/', $temp_path);
+        $blog->save();
 //        Storage::disk('local')->put($blog->picture, 'picture');
     }
 
@@ -165,11 +166,12 @@ class BlogController extends Controller
 
         $this->validation($request);
 
+        $data->fill($request->all())->save();
+
         if( $request['picture'] ){
             $file_path = request()->file('picture')->getClientOriginalName();
             $this->store_image($file_path, $data);
         }
-        $data->fill($request->all())->save();
         return redirect('/blogs');
     }
 
