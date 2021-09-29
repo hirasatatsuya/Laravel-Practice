@@ -13,13 +13,14 @@ class CreateBlogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $table) {
-            $table->id();
-            $table->string('title')->default("")->comment('タイトル');
-            $table->text('content')->nullable()->comment('内容');
-            $table->timestamps();
+        Schema::create('blogs', function (Blueprint $blogs) {
+            $blogs->id();
+            $blogs->string('title')->default("")->comment('タイトル');
+            $blogs->text('content')->nullable()->comment('内容');
+            $blogs->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
